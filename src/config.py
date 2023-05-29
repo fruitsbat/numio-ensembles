@@ -1,14 +1,21 @@
-from enum import Enum, unique, auto
-from rich.logging import RichHandler
+from enum import Enum, unique
 import logging
+from rich.logging import RichHandler
 
 
+@unique
 class MODE(Enum):
+    """
+    collection of different run modes
+    """
+
     EMPTY = "empty"
     BALANCED = "balanced"
     PEAK = "peak"
+    """maxium load"""
 
 
+@unique
 class LOGLEVEL(Enum):
     CRITICAL = "critical"
     ERROR = "error"

@@ -1,19 +1,22 @@
 #!/usr/bin/env python
+"""
+hehe
+"""
 
-import time
-import typer
-import logging
-from rich.logging import RichHandler
-from click import Context
-from config import MODE, LOGLEVEL
-from typing_extensions import Annotated
-from typing import Iterable
-from rich.progress import track
 from typer.core import TyperGroup
+import typer
+from click import Context
+from typing_extensions import Annotated
+from config import MODE, LOGLEVEL
 
 
 # return commands in a more reasonable order than alphabetical
 class OrderCommands(TyperGroup):
+    """
+    used to order commands in the help prompt in order of appearance
+    instead of alphabetically
+    """
+
     def list_commands(self, ctx: Context):
         return list(self.commands)  # return commands in order of appearance
 
@@ -28,7 +31,10 @@ def simple(
         typer.Option(
             "--mode",
             "-m",
-            help=("what type of load to use, gets overridden by other cli args."),
+            help=(
+                "what type of load to use, "
+                + "gets overridden by other cli args."
+            ),
         ),
     ] = MODE.EMPTY.value
 ):
@@ -45,7 +51,6 @@ def advanced():
     this mode offers some options.
     use this if you would like to tweak the script a bit.
     """
-    pass
 
 
 @app.command()
@@ -54,7 +59,6 @@ def expert():
     in this mode, the script tries to get out of your way!
     use this if you want to configure everything yourself.
     """
-    pass
 
 
 @app.callback()
@@ -66,8 +70,11 @@ def main(
 ):
     """
     this is a script designed to help you quickly run numio benchmarks.
-    it tries to simulate realistic test conditions by creating disk and network load.
-    these are shared resources, so performance issues related to them would be hard to find using an isolated program.
+    it tries to simulate realistic test conditions
+    by creating disk and network load.
+    these are shared resources,
+    so performance issues related to them would be hard to find
+    using an isolated program.
 
     """
     loglevel.init_logging()
