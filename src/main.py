@@ -7,7 +7,8 @@ from typer.core import TyperGroup
 import typer
 from click import Context
 from typing_extensions import Annotated
-from config import MODE, LOGLEVEL
+from config import LOGLEVEL
+import advanced
 
 
 # return commands in a more reasonable order than alphabetical
@@ -25,40 +26,22 @@ app = typer.Typer(cls=OrderCommands)
 
 
 @app.command()
-def simple(
-    load: Annotated[
-        MODE,
-        typer.Option(
-            "--mode",
-            "-m",
-            help=(
-                "what type of load to use, "
-                + "gets overridden by other cli args."
-            ),
-        ),
-    ] = MODE.EMPTY.value
-):
+def simple():
     """
-    this mode offers preconfigured options.
-    use this to run a set of sensible, preconfigured benchmarks.
-    """
-    print(load)
-
-
-@app.command()
-def advanced():
-    """
-    this mode offers some options.
-    use this if you would like to tweak the script a bit.
+    This performs a benchmark run
+    with sensible defaults.
+    Use this if you just want to
+    quickly run your benchmark.
     """
 
 
-@app.command()
-def expert():
-    """
-    in this mode, the script tries to get out of your way!
-    use this if you want to configure everything yourself.
-    """
+app.add_typer(
+    advanced.app,
+    name="advanced",
+    help="This performs a configurable benchmark run."
+    + " "
+    + "Use this if you want more fine grained control of the script.",
+)
 
 
 @app.callback()
