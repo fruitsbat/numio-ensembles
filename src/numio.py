@@ -15,12 +15,11 @@ class NumioHandle:
     ):
         pass
 
-    def generate_command(self) -> bytes:
+    def generate_command(self) -> list:
         """
         get corresponding command for this
         instance of numio handle
         """
         return (
-            # global_vars.SRUN_PATH + "-m iter=1000,size=1000,pert=2"
-            "hostname"
+            str(global_vars.NUMIO_PATH) + " -m iter=1000,size=1000,pert=2"
         ).encode()

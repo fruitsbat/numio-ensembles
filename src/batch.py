@@ -71,7 +71,9 @@ class BatchScript:
             f"--partition={self.partition}",
             f"--ntasks-per-node={self.tasks_per_node}",
             f"--nodes={self.nodes}",
-            NumioHandle().generate_command().decode(),
+            f"{global_vars.NUMIO_PATH}",
+            "-m",
+            "iter=1000,size=1000,pert=2",
         ]
 
     def print(self) -> None:
