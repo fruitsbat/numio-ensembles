@@ -3,7 +3,7 @@ helps execute batch scripts
 """
 
 import logging
-from subprocess import Popen, PIPE, STDOUT
+from subprocess import Popen, PIPE
 import global_vars
 
 
@@ -51,11 +51,20 @@ class BatchScript:
             script_results = script_handle.communicate(
                 input=self.generate_script(),
             )
-            logging.info(script_results)
+
+            if script_results[0]:  # log stdout
+                logging.info(script_results[0].decode())
+            if script_results[1]:  # log stderr
+                logging.error(
+                    "[bold red]failed to run sbatch job:[/] %s",
+                    script_results[1].decode(),
+                )
 
     def generate_script(self) -> bytes:
         """
-        generate a jobscript for sbatch to run
+        generate a jobscript for sbatch to run.
+        this is basically the same as telling it
+        to read from a file
         """
         return (
             "#!/bin/bash"
@@ -64,7 +73,12 @@ class BatchScript:
             + f"\n#SBATCH --ntasks-per-node={self.tasks_per_node}"
             + f"\n#SBATCH --ntasks={self.tasks}"
             + f"\n#SBATCH --partition={self.partition}"
-            + "\n#SBATCH --output=/tmp/numio-ensemble-runner-job.out"
+            + "\n#SBATCH --output=/tmp/wawa.out"
             + "\n"
             + f"\n{global_vars.SRUN_PATH} {self.command}"
         ).encode()
+
+    def print(self) -> None:
+        """
+        show a table with info about this script on the command line
+        """

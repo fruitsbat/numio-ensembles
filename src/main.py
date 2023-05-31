@@ -3,9 +3,7 @@
 hehe
 """
 
-import time
 from pathlib import Path
-from rich.progress import Progress, SpinnerColumn, TextColumn
 from typer.core import TyperGroup
 import typer
 from click import Context
@@ -31,22 +29,22 @@ app = typer.Typer(cls=OrderCommands)
 
 
 @app.command()
-def simple():
+def simple(
+    partition: Annotated[
+        str,
+        typer.Option(
+            "--partition",
+            "-p",
+        ),
+    ] = "west"
+):
     """
     This performs a benchmark run
     with sensible defaults.
     Use this if you just want to
     quickly run your benchmark.
     """
-    with Progress(
-        SpinnerColumn(),
-        TextColumn(""),
-        transient=True,
-    ) as progress:
-        progress.print("spinning up!")
-        script: batch.BatchScript = batch.BatchScript()
-        script.run()
-        time.sleep(1)
+    batch.BatchScript(partition=partition).run()
 
 
 app.add_typer(
@@ -80,6 +78,16 @@ def main(
             help="what command to use for sbatch",
         ),
     ] = "sbatch",
+    numio_path: Annotated[
+        Path,
+        typer.Option(
+            "--numio-path",
+            "-nio",
+            help="what command to use for numio, "
+            + "should work for all different ones "
+            + "such as numio-adios2 or numio-posix",
+        ),
+    ] = "numio-posix",
 ):
     """
     this is a script designed to help you quickly run numio benchmarks.
@@ -93,6 +101,7 @@ def main(
     loglevel.init_logging()
     global_vars.SRUN_PATH = srun_path
     global_vars.SBATCH_PATH = sbatch_path
+    global_vars.NUMIO_PATH = numio_path
 
 
 if __name__ == "__main__":
