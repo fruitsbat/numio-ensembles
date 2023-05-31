@@ -68,9 +68,3 @@ class BatchScript:
             + "\n"
             + f"\n{global_vars.SRUN_PATH} {self.command}"
         ).encode()
-
-    def do_smth(self):
-        """
-        the name of this function is a lie,
-        it doesnt do anything
-        """
