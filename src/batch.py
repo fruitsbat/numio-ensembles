@@ -7,7 +7,7 @@ from subprocess import Popen, PIPE
 from rich.console import Console
 from rich.table import Table
 import global_vars
-from numio import NumioHandle
+from rich.progress import Progress, SpinnerColumn, TextColumn
 
 
 class BatchScript:
@@ -52,7 +52,13 @@ class BatchScript:
             stdin=PIPE,
             stderr=PIPE,
         ) as script_handle:
-            script_results = script_handle.communicate()
+            with Progress(  # show pretty spinner
+                SpinnerColumn(),
+                TextColumn("[progress.description]{task.description}"),
+                transient=True,
+            ) as progress:
+                progress.add_task(description="Running NumIO...", total=None)
+                script_results = script_handle.communicate()
 
             if script_results[0]:  # log stdout
                 logging.info(script_results[0].decode())
