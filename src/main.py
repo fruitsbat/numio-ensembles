@@ -3,12 +3,17 @@
 hehe
 """
 
+import time
+from pathlib import Path
+from rich.progress import Progress, SpinnerColumn, TextColumn
 from typer.core import TyperGroup
 import typer
 from click import Context
 from typing_extensions import Annotated
 from config import LOGLEVEL
 import advanced
+import batch
+import global_vars
 
 
 # return commands in a more reasonable order than alphabetical
@@ -33,6 +38,15 @@ def simple():
     Use this if you just want to
     quickly run your benchmark.
     """
+    with Progress(
+        SpinnerColumn(),
+        TextColumn(""),
+        transient=True,
+    ) as progress:
+        progress.print("spinning up!")
+        script: batch.BatchScript = batch.BatchScript()
+        script.run()
+        time.sleep(1)
 
 
 app.add_typer(
@@ -49,7 +63,23 @@ def main(
     loglevel: Annotated[
         LOGLEVEL,
         typer.Option("--loglevel", "-l", help="adjust chattyness of app"),
-    ] = LOGLEVEL.INFO.value
+    ] = LOGLEVEL.INFO.value,
+    srun_path: Annotated[
+        Path,
+        typer.Option(
+            "--srun-path",
+            "-sr",
+            help="what command to use for srun",
+        ),
+    ] = "srun",
+    sbatch_path: Annotated[
+        Path,
+        typer.Option(
+            "--sbatch-path",
+            "-sb",
+            help="what command to use for sbatch",
+        ),
+    ] = "sbatch",
 ):
     """
     this is a script designed to help you quickly run numio benchmarks.
@@ -61,6 +91,8 @@ def main(
 
     """
     loglevel.init_logging()
+    global_vars.SRUN_PATH = srun_path
+    global_vars.SBATCH_PATH = sbatch_path
 
 
 if __name__ == "__main__":
