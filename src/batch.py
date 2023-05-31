@@ -68,7 +68,7 @@ class BatchScript:
             f"--partition={self.partition}",
             f"--ntasks-per-node={self.tasks_per_node}",
             f"--nodes={self.nodes}",
-            "bash" + NumioHandle().generate_command().decode(),
+            NumioHandle().generate_command().decode(),
         ]
 
     def print(self) -> None:

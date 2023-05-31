@@ -20,4 +20,6 @@ class NumioHandle:
         get corresponding command for this
         instance of numio handle
         """
-        return (" -- " + "-m iter=1000,size=1000,pert=2").encode()
+        return (
+            global_vars.SRUN_PATH + "-m iter=1000,size=1000,pert=2"
+        ).encode()
