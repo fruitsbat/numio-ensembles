@@ -4,6 +4,8 @@ helps execute batch scripts
 
 import logging
 from subprocess import Popen, PIPE
+from rich.console import Console
+from rich.table import Table
 import global_vars
 from numio import NumioHandle
 
@@ -43,6 +45,7 @@ class BatchScript:
         """
         run this batch script on the cluster
         """
+        self.print()
         with Popen(
             self.generate_args(),
             stdout=PIPE,
@@ -75,3 +78,12 @@ class BatchScript:
         """
         show a table with info about this script on the command line
         """
+        table = Table(title="this run")
+        table.add_column("Data")
+        table.add_column("Value")
+        table.add_row("partition", str(self.partition))
+        table.add_row("tasks total", str(self.tasks))
+        table.add_row("tasks per node", str(self.tasks_per_node))
+        table.add_row("nodes", str(self.nodes))
+        table.add_row("time before timeout", str(self.time))
+        Console().print(table)

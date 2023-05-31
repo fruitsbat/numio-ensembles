@@ -21,5 +21,6 @@ class NumioHandle:
         instance of numio handle
         """
         return (
-            global_vars.SRUN_PATH + "-m iter=1000,size=1000,pert=2"
+            # global_vars.SRUN_PATH + "-m iter=1000,size=1000,pert=2"
+            "hostname"
         ).encode()
