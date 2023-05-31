@@ -70,14 +70,6 @@ def main(
             help="what command to use for srun",
         ),
     ] = "srun",
-    sbatch_path: Annotated[
-        Path,
-        typer.Option(
-            "--sbatch-path",
-            "-sb",
-            help="what command to use for sbatch",
-        ),
-    ] = "sbatch",
     numio_path: Annotated[
         Path,
         typer.Option(
@@ -100,7 +92,6 @@ def main(
     """
     loglevel.init_logging()
     global_vars.SRUN_PATH = srun_path
-    global_vars.SBATCH_PATH = sbatch_path
     global_vars.NUMIO_PATH = numio_path
 
 

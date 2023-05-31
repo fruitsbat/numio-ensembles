@@ -5,6 +5,7 @@ helps execute batch scripts
 import logging
 from subprocess import Popen, PIPE
 import global_vars
+from numio import NumioHandle
 
 
 class BatchScript:
@@ -17,10 +18,10 @@ class BatchScript:
         self,
         partition: str = "west",
         nodes: int = 2,
-        tasks_per_node: int = 5,
-        tasks: int = 10,
+        tasks_per_node: int = 1,
+        tasks: int = 2,
         time: int = 1,
-        command: str = "hostname",
+        command: str = "numio-posix",
     ):
         """
         :param str partition: the partition to run this on
@@ -43,14 +44,12 @@ class BatchScript:
         run this batch script on the cluster
         """
         with Popen(
-            [global_vars.SBATCH_PATH],
+            self.generate_args(),
             stdout=PIPE,
             stdin=PIPE,
             stderr=PIPE,
         ) as script_handle:
-            script_results = script_handle.communicate(
-                input=self.generate_script(),
-            )
+            script_results = script_handle.communicate()
 
             if script_results[0]:  # log stdout
                 logging.info(script_results[0].decode())
@@ -60,23 +59,17 @@ class BatchScript:
                     script_results[1].decode(),
                 )
 
-    def generate_script(self) -> bytes:
+    def generate_args(self) -> []:
         """
-        generate a jobscript for sbatch to run.
-        this is basically the same as telling it
-        to read from a file
+        srun args
         """
-        return (
-            "#!/bin/bash"
-            + f"\n#SBATCH --time={self.time}"
-            + f"\n#SBATCH --nodes={self.nodes}"
-            + f"\n#SBATCH --ntasks-per-node={self.tasks_per_node}"
-            + f"\n#SBATCH --ntasks={self.tasks}"
-            + f"\n#SBATCH --partition={self.partition}"
-            + "\n#SBATCH --output=/tmp/wawa.out"
-            + "\n"
-            + f"\n{global_vars.SRUN_PATH} {self.command}"
-        ).encode()
+        return [
+            global_vars.SRUN_PATH,
+            f"--partition={self.partition}",
+            f"--ntasks-per-node={self.tasks_per_node}",
+            f"--nodes={self.nodes}",
+            "bash" + NumioHandle().generate_command().decode(),
+        ]
 
     def print(self) -> None:
         """
