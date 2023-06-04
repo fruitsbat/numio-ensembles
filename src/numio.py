@@ -3,10 +3,9 @@ things for working with numio
 """
 
 from dataclasses import dataclass
-from rich.table import Table
-from rich.console import Console
 
 import global_vars
+import pretty_print
 
 
 @dataclass
@@ -16,7 +15,7 @@ class NumioModel:
     """
 
     command: str = "numio-posix"
-    numio_iter: int = 200000
+    iterations: int = 200000
     matrix_size: int = 5000
     use_perturbation_function: bool = True
 
@@ -24,18 +23,23 @@ class NumioModel:
         """
         pretty print this to the terminal
         """
-        table = Table(title="NumIO")
-        table.add_column("Data")
-        table.add_column("Value")
-        table.add_row("iterations", str(self.numio_iter))
-        table.add_row("matrix size", f"{self.matrix_size}x{self.matrix_size}")
-        table.add_row(
-            "perturbation function",
-            "f(x,y) = 0"
-            if not self.use_perturbation_function
-            else "f(x,y) = 2 * pi^2 * sin(pi * x) * sin(pi * y)",
+        pretty_print.print_boxes(
+            "NumIO settings",
+            [
+                (" ".join(self.generate_args()), "command"),
+                (str(self.iterations), "iterations"),
+                (
+                    f"{self.matrix_size} x {self.matrix_size}",
+                    "matrix size",
+                ),
+                (
+                    "f(x,y) = 2 * pi^2 * sin(pi * x) * sin(pi * y)"
+                    if self.use_perturbation_function
+                    else "f(x,y) = 0",
+                    "perturbation function",
+                ),
+            ],
         )
-        Console().print(table)
 
     def generate_args(self) -> [str]:
         """
@@ -44,7 +48,7 @@ class NumioModel:
         return [
             f"{global_vars.NUMIO_PATH}",
             "-m",
-            f"iter={self.numio_iter},"
+            f"iter={self.iterations},"
             + f"size={self.matrix_size},"
-            + f"pert={1 if self.use_perturbation_function else 0}",
+            + f"pert={2 if self.use_perturbation_function else 1}",
         ]

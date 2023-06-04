@@ -6,6 +6,7 @@ import logging
 import time
 
 from subprocess import Popen, PIPE
+import rich
 from rich.progress import Progress, SpinnerColumn, TextColumn
 from dateutil.relativedelta import relativedelta as rd
 
@@ -45,36 +46,32 @@ class BatchScript:
             ) as progress:
                 progress.add_task(
                     description=(
-                        "[magenta]:play_button: "
+                        "[green]:play_button: "
                         "Running the NumIO benchmark...[/]"
                         "\n\n"
                         "this might take a while.\n"
                         "if that's a problem for you "
                         "then try running like "
-                        "[green]nohup numio-ensembles &[/]"
+                        "[cyan]nohup numio-ensembles &[/]"
                     ),
                     total=None,
                 )
                 start_time = time.perf_counter()
                 script_results = script_handle.communicate()
                 time_taken = rd(seconds=time.perf_counter() - start_time)
-                logging.info(
+                rich.print(
                     (
                         ":stopwatch: "
                         "finished in "
-                        "[yellow]%s[/] days, "
-                        "[yellow]%s[/] hours, "
-                        "[yellow]%s[/] minutes "
-                        "and [yellow]%s[/] seconds"
-                    ),
-                    time_taken.days,
-                    time_taken.hours,
-                    time_taken.minutes,
-                    round(time_taken.seconds),
+                        f"[cyan]{time_taken.days}[/] days, "
+                        f"[cyan]{time_taken.hours}[/] hours, "
+                        f"[cyan]{time_taken.minutes}[/] minutes "
+                        f"and [cyan]{round(time_taken.seconds)}[/] seconds"
+                    )
                 )
 
             if script_results[0]:  # log stdout
-                logging.info(script_results[0].decode())
+                rich.print(script_results[0].decode())
             if script_results[1]:  # log stderr
                 logging.error(
                     "[bold red]failed to run sbatch job:[/] %s",
