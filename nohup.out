@@ -1,0 +1,10 @@
+           this run            
+┏━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━┓
+┃ Data                ┃ Value ┃
+┡━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━┩
+│ partition           │ west  │
+│ tasks total         │ 2     │
+│ tasks per node      │ 1     │
+│ nodes               │ 2     │
+│ time before timeout │ 1     │
+└─────────────────────┴───────┘

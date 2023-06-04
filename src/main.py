@@ -12,6 +12,7 @@ from config import LOGLEVEL
 import advanced
 import batch
 import global_vars
+import slurm
 
 
 # return commands in a more reasonable order than alphabetical
@@ -44,7 +45,7 @@ def simple(
     Use this if you just want to
     quickly run your benchmark.
     """
-    batch.BatchScript(partition=partition).run()
+    batch.BatchScript(slurm_model=slurm.SlurmModel(partition=partition)).run()
 
 
 app.add_typer(

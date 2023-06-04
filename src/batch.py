@@ -3,11 +3,17 @@ helps execute batch scripts
 """
 
 import logging
+import time
+
 from subprocess import Popen, PIPE
-from rich.console import Console
 from rich.table import Table
-import global_vars
 from rich.progress import Progress, SpinnerColumn, TextColumn
+from rich.console import Console
+from dateutil.relativedelta import relativedelta as rd
+
+import global_vars
+from slurm import SlurmModel
+from numio import NumioModel
 
 
 class BatchScript:
@@ -18,28 +24,22 @@ class BatchScript:
     # pylint: disable=too-many-arguments
     def __init__(
         self,
-        partition: str = "west",
-        nodes: int = 2,
-        tasks_per_node: int = 1,
-        tasks: int = 2,
-        time: int = 1,
-        command: str = "numio-posix",
+        slurm_model: SlurmModel = SlurmModel(),
+        numio_model: NumioModel = NumioModel(),
     ):
         """
         :param str partition: the partition to run this on
         :param int nodes: amount of nodes
         :param int tasks_per_node: how many tasks to run on each node
         :param int tasks: how many tasks to run
-        :param int time: how long the program can take in minutes
+        :param int timeout: how long the program can take in minutes
         :param str command: what command to run
+        :param int numio_iter: how many iterations numio should run
+        :param int matrix_size: size of the (square) numio matrix
         """
 
-        self.partition = partition
-        self.nodes = nodes
-        self.tasks_per_node = tasks_per_node
-        self.tasks = tasks
-        self.time = time
-        self.command = command
+        self.numio = numio_model
+        self.slurm = slurm_model
 
     def run(self):
         """
@@ -57,8 +57,33 @@ class BatchScript:
                 TextColumn("[progress.description]{task.description}"),
                 transient=True,
             ) as progress:
-                progress.add_task(description="Running NumIO...", total=None)
+                progress.add_task(
+                    description=(
+                        ":play_button: Running the NumIO benchmark...\n\n"
+                        "this might take a while.\n"
+                        "if that's a problem for you "
+                        "then try running like "
+                        "[green]nohup numio-ensembles &[/]"
+                    ),
+                    total=None,
+                )
+                start_time = time.perf_counter()
                 script_results = script_handle.communicate()
+                time_taken = rd(seconds=time.perf_counter() - start_time)
+                logging.info(
+                    (
+                        ":stopwatch: "
+                        "finished in "
+                        "[yellow]%s[/] days, "
+                        "[yellow]%s[/] hours, "
+                        "[yellow]%s[/] minutes "
+                        "and [yellow]%s[/] seconds"
+                    ),
+                    time_taken.days,
+                    time_taken.hours,
+                    time_taken.minutes,
+                    round(time_taken.seconds),
+                )
 
             if script_results[0]:  # log stdout
                 logging.info(script_results[0].decode())
@@ -74,24 +99,19 @@ class BatchScript:
         """
         return [
             global_vars.SRUN_PATH,
-            f"--partition={self.partition}",
-            f"--ntasks-per-node={self.tasks_per_node}",
-            f"--nodes={self.nodes}",
+            f"--partition={self.slurm.partition}",
+            f"--ntasks-per-node={self.slurm.tasks_per_node}",
+            f"--nodes={self.slurm.nodes}",
             f"{global_vars.NUMIO_PATH}",
             "-m",
-            "iter=1000,size=1000,pert=2",
+            f"iter={self.numio.numio_iter},"
+            + f"size={self.numio.matrix_size},"
+            + f"pert={1 if self.numio.use_perturbation_function else 0}",
         ]
 
     def print(self) -> None:
         """
         show a table with info about this script on the command line
         """
-        table = Table(title="this run")
-        table.add_column("Data")
-        table.add_column("Value")
-        table.add_row("partition", str(self.partition))
-        table.add_row("tasks total", str(self.tasks))
-        table.add_row("tasks per node", str(self.tasks_per_node))
-        table.add_row("nodes", str(self.nodes))
-        table.add_row("time before timeout", str(self.time))
-        Console().print(table)
+        self.slurm.print()
+        self.numio.print()
