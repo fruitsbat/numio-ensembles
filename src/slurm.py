@@ -6,6 +6,8 @@ from dataclasses import dataclass
 from rich.table import Table
 from rich.console import Console
 
+import global_vars
+
 
 @dataclass
 class SlurmModel:
@@ -13,11 +15,11 @@ class SlurmModel:
     stores srun cli args
     """
 
-    partition: str = ("west",)
-    nodes: int = (2,)
-    tasks_per_node: int = (1,)
-    tasks: int = (3,)
-    timeout: int = (1,)
+    partition: str = "west"
+    nodes: int = 2
+    tasks_per_node: int = 1
+    tasks: int = 2
+    timeout: int = 1
 
     def print(self) -> None:
         """
@@ -32,3 +34,14 @@ class SlurmModel:
         table.add_row("nodes", str(self.nodes))
         table.add_row("time before timeout", str(self.timeout))
         Console().print(table)
+
+    def generate_args(self) -> [str]:
+        """
+        arguments to use srun
+        """
+        return [
+            global_vars.SRUN_PATH,
+            f"--partition={self.partition}",
+            f"--ntasks-per-node={self.tasks_per_node}",
+            f"--nodes={self.nodes}",
+        ]
