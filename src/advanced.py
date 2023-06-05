@@ -21,12 +21,11 @@ def empty(
     batch.BatchScript(
         slurm_model=slurm.SlurmModel(),
         numio_model=numio.NumioModel(
-            iterations=1,
-            matrix_size=9,
-            use_perturbation_function=False,
-            write_frequency=1,
-            communication_frequency=1,
-            communication_size=1,
+            matrix_model=numio.MatrixModel(
+                iterations=1,
+                size=9,
+                use_perturbation_function=False,
+            ),
         ),
     ).run()
 

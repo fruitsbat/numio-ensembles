@@ -26,7 +26,8 @@ class SlurmModel:
             "mpirun settings",
             [
                 (" ".join(self.generate_args()), "command"),
-                (str(self.nodes), "nodes"),
+                (str(self.nodes) if self.nodes else "all", "nodes"),
+                (str(global_vars.MPIRUN_PATH), "path"),
             ],
         )
 
@@ -34,9 +35,16 @@ class SlurmModel:
         """
         arguments to use srun
         """
-        logging.debug("mpirun path: %s", global_vars.MPIRUN_PATH),
-        return [
+        args = [
             str(global_vars.MPIRUN_PATH),
-            "-n",
-            str(self.nodes),
         ]
+
+        if self.nodes:
+            args = args + [
+                "-n",
+                str(self.nodes),
+            ]
+
+        logging.debug("mpirun args: %s", args)
+
+        return args

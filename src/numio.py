@@ -17,8 +17,8 @@ class ReadModel:
     functionality for reading
     """
 
-    read_frequency: int = 1
-    read_path: os.path = "path.out"
+    frequency: int = 1
+    filepath: os.path = "path.out"
 
     def generate_args(self) -> [str]:
         """
@@ -26,7 +26,81 @@ class ReadModel:
         """
         return [
             "-r",
-            (f"freq={self.read_frequency}," f"path={self.read_path}"),
+            (f"freq={self.frequency}," f"path={self.filepath}"),
+        ]
+
+
+@dataclass
+class MatrixModel:
+    """
+    models how the matrix works that gets calculated in NumIO
+    """
+
+    iterations: int = 200000
+    size: int = 5000
+    use_perturbation_function: bool = True
+
+    def generate_args(self) -> [str]:
+        """
+        get args to control the matrix
+        """
+        return [
+            "-m",
+            (
+                f"iter={self.iterations},"
+                f"size={self.size},"
+                f"pert={2 if self.use_perturbation_function else 1}"
+            ),
+        ]
+
+
+@dataclass
+class WriteModel:
+    """
+    how numio writes data
+    """
+
+    frequency: int = 1
+    immediate_write: bool = False
+    filesync: bool = True
+    pattern: str = ""
+    write_path: os.path = "path.out"
+
+    def generate_args(self) -> [str]:
+        """
+        cli args for controlling writing
+        """
+        return [
+            "-w",
+            (
+                f"freq={self.frequency},"
+                f"path={self.write_path}"
+                + (
+                    ""
+                    if self.filesync
+                    else ",nofilesync" f'pattern="{self.pattern}"'
+                )
+                + (",imm" if self.immediate_write else "")
+            ),
+        ]
+
+
+@dataclass
+class CommunicationModel:
+    """
+    how numio fakes communication
+    """
+
+    frequency: int = 1
+    size_in_kb: int = 1
+
+    def generate_args(self) -> [str]:
+        """
+        cli args for controlling writing
+        """
+        return [
+            "-c",
+            (f"freq={self.frequency}," f"size={self.size_in_kb}"),
         ]
 
 
@@ -37,47 +111,20 @@ class NumioModel:
     """
 
     command: str = "numio-posix"
-    iterations: int = 200000
-    matrix_size: int = 5000
-    use_perturbation_function: bool = True
-    write_frequency: int = 1
-    immediate_write: bool = False
-    filesync: bool = True
-    pattern: str = ""
-    write_path: os.path = "path.out"
-    communication_frequency: int = 1
-    communication_size: int = 1000
     threads: int = 1
     per_process_writing: bool = False
-    read_model: Optional[ReadModel] = None
+
+    matrix_model: MatrixModel = MatrixModel()
+    read_model: Optional[ReadModel] = ReadModel()
+    write_model: Optional[WriteModel] = WriteModel()
+    communication_model: Optional[CommunicationModel] = CommunicationModel()
 
     def print(self) -> None:
         """
         pretty print this to the terminal
         """
         pretty_print.print_boxes(
-            "NumIO settings",
-            [
-                (" ".join(self.generate_args()), "command"),
-                (str(self.iterations), "iterations"),
-                (
-                    f"{self.matrix_size} x {self.matrix_size}",
-                    "matrix size",
-                ),
-                (
-                    "f(x,y) = 2 * pi^2 * sin(pi * x) * sin(pi * y)"
-                    if self.use_perturbation_function
-                    else "f(x,y) = 0",
-                    "perturbation function",
-                ),
-                (str(self.write_frequency), "write frequency"),
-                (
-                    f"[green]{self.immediate_write}[/]"
-                    if self.immediate_write
-                    else f"[red]{self.immediate_write}[/]",
-                    "immediate write",
-                ),
-            ],
+            "NumIO setting", [(" ".join(self.generate_args()), "command")]
         )
 
     def generate_args(self) -> [str]:
@@ -86,28 +133,16 @@ class NumioModel:
         """
         args = [
             f"{global_vars.NUMIO_PATH}",
-            "-m",
-            f"iter={self.iterations},"
-            + f"size={self.matrix_size},"
-            + f"pert={2 if self.use_perturbation_function else 1}",
-            "-w",
-            (
-                f"freq={self.write_frequency},"
-                f"path={self.write_path}"
-                + (
-                    ""
-                    if self.filesync
-                    else ",nofilesync" f'pattern="{self.pattern}"'
-                )
-                + (",imm" if self.immediate_write else "")
-            ),
-            "-c",
-            (
-                f"freq={self.communication_frequency},"
-                f"size={self.communication_size}"
-            ),
-            "-t",
-            str(self.threads),
-        ] + (self.read_model.generate_args() if self.read_model else [])
+        ] + self.matrix_model.generate_args()
+
+        if self.read_model:
+            args = args + self.read_model.generate_args()
+
+        if self.write_model:
+            args = args + self.write_model.generate_args()
+
+        args = args + ["-t", str(self.threads)]
+
         logging.debug("numio args: %s", args)
+
         return args
