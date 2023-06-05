@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 """
-hehe
+cli for the main page
 """
 
 from pathlib import Path
@@ -45,7 +45,7 @@ def simple(
     Use this if you just want to
     quickly run your benchmark.
     """
-    batch.BatchScript(slurm_model=slurm.SlurmModel(partition=partition)).run()
+    batch.BatchScript(slurm_model=slurm.SlurmModel()).run()
 
 
 app.add_typer(
@@ -63,14 +63,14 @@ def main(
         LOGLEVEL,
         typer.Option("--loglevel", "-l", help="adjust chattyness of app"),
     ] = LOGLEVEL.INFO.value,
-    srun_path: Annotated[
+    mpirun_path: Annotated[
         Path,
         typer.Option(
             "--srun-path",
-            "-sr",
-            help="what command to use for srun",
+            "-mr",
+            help="what command to use for mpirun",
         ),
-    ] = "srun",
+    ] = "mpirun",
     numio_path: Annotated[
         Path,
         typer.Option(
@@ -92,8 +92,8 @@ def main(
 
     """
     loglevel.init_logging()
-    global_vars.SRUN_PATH = srun_path
     global_vars.NUMIO_PATH = numio_path
+    global_vars.MPIRUN_PATH = mpirun_path
 
 
 if __name__ == "__main__":

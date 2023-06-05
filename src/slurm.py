@@ -3,9 +3,8 @@ slurm specific things
 """
 
 from dataclasses import dataclass
-import rich
-from rich.columns import Columns
-from rich.panel import Panel
+from typing import Optional
+import logging
 
 import global_vars
 import pretty_print
@@ -17,25 +16,17 @@ class SlurmModel:
     stores srun cli args
     """
 
-    partition: str = "west"
-    nodes: int = 2
-    tasks_per_node: int = 1
-    tasks: int = 2
-    timeout: int = 1
+    nodes: Optional[int] = None
 
     def print(self) -> None:
         """
         pretty print this to the terminal
         """
         pretty_print.print_boxes(
-            "slurm settings",
+            "mpirun settings",
             [
                 (" ".join(self.generate_args()), "command"),
-                (self.partition, "partition"),
                 (str(self.nodes), "nodes"),
-                (str(self.tasks_per_node), "tasks per node"),
-                (str(self.tasks), "total tasks"),
-                (str(self.timeout), "timeout"),
             ],
         )
 
@@ -43,9 +34,9 @@ class SlurmModel:
         """
         arguments to use srun
         """
+        logging.debug("mpirun path: %s", global_vars.MPIRUN_PATH),
         return [
-            str(global_vars.SRUN_PATH),
-            f"--partition={self.partition}",
-            f"--ntasks-per-node={self.tasks_per_node}",
-            f"--nodes={self.nodes}",
+            str(global_vars.MPIRUN_PATH),
+            "-n",
+            str(self.nodes),
         ]
