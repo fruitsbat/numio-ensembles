@@ -76,6 +76,7 @@ def balanced():
         numio_model=numio.NumioModel(
             matrix_model=numio.MatrixModel(
                 size=50,
+                use_perturbation_function=True,
             ),
             write_model=numio.WriteModel(
                 frequency=100,
@@ -126,6 +127,7 @@ def peak(
         numio_model=numio.NumioModel(
             matrix_model=numio.MatrixModel(
                 size=500,
+                use_perturbation_function=True,
             ),
             communication_model=None
             if do_not_use_communication or do_not_do_the_thing
