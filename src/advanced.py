@@ -92,7 +92,32 @@ def balanced():
 
 
 @app.command()
-def peak():
+def peak(
+    do_not_do_the_thing: Annotated[
+        bool,
+        typer.Option(
+            "--none",
+            "-a",
+            help="only do basic matrix operations",
+        ),
+    ] = False,
+    do_not_use_read_write: Annotated[
+        bool,
+        typer.Option(
+            "--read-write",
+            "-r",
+            help="use read and write operations",
+        ),
+    ] = False,
+    do_not_use_communication: Annotated[
+        bool,
+        typer.Option(
+            "--communication",
+            "-c",
+            help="use write operations",
+        ),
+    ] = False,
+):
     """
     A benchmark that puts a high level of stress on the system.
     """
@@ -102,14 +127,20 @@ def peak():
             matrix_model=numio.MatrixModel(
                 size=500,
             ),
-            communication_model=numio.CommunicationModel(
+            communication_model=None
+            if do_not_use_communication or do_not_do_the_thing
+            else numio.CommunicationModel(
                 frequency=1,
                 size_in_kb=100000,
             ),
-            write_model=numio.WriteModel(
+            write_model=None
+            if do_not_use_read_write or do_not_do_the_thing
+            else numio.WriteModel(
                 frequency=1,
             ),
-            read_model=numio.ReadModel(
+            read_model=None
+            if do_not_use_read_write or do_not_do_the_thing
+            else numio.ReadModel(
                 frequency=2,
             ),
         ),
