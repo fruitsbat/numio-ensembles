@@ -25,7 +25,7 @@ def empty(
         bool,
         typer.Option(
             "--read-write",
-            "-r",
+            "-rw",
             help="use read and write operations",
         ),
     ] = False,
@@ -97,23 +97,23 @@ def peak(
         bool,
         typer.Option(
             "--none",
-            "-a",
+            "-n",
             help="only do basic matrix operations",
         ),
     ] = False,
     do_not_use_read_write: Annotated[
         bool,
         typer.Option(
-            "--read-write",
-            "-r",
-            help="use read and write operations",
+            "--no-read-write",
+            "-nrw",
+            help="do not use read and write operations",
         ),
     ] = False,
     do_not_use_communication: Annotated[
         bool,
         typer.Option(
-            "--communication",
-            "-c",
+            "--no-communication",
+            "-nc",
             help="use write operations",
         ),
     ] = False,
