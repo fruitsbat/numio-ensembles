@@ -3,7 +3,6 @@ slurm specific things
 """
 
 from dataclasses import dataclass
-from typing import Optional
 import logging
 
 import global_vars
@@ -16,8 +15,6 @@ class SlurmModel:
     stores srun cli args
     """
 
-    nodes: Optional[int] = None
-
     def print(self) -> None:
         """
         pretty print this to the terminal
@@ -26,7 +23,12 @@ class SlurmModel:
             "mpirun settings",
             [
                 (" ".join(self.generate_args()), "command"),
-                (str(self.nodes) if self.nodes else "all", "nodes"),
+                (
+                    str(global_vars.NODE_COUNT)
+                    if global_vars.NODE_COUNT
+                    else "1",
+                    "nodes",
+                ),
                 (str(global_vars.MPIRUN_PATH), "path"),
             ],
         )
@@ -37,13 +39,14 @@ class SlurmModel:
         """
         args = [
             str(global_vars.MPIRUN_PATH),
+            "-ppn",
+            "1",
+            "-n",
         ]
 
-        if self.nodes:
-            args = args + [
-                "-n",
-                str(self.nodes),
-            ]
+        args = args + [
+            str(global_vars.NODE_COUNT) if global_vars.NODE_COUNT else str("1")
+        ]
 
         logging.debug("mpirun args: %s", args)
 

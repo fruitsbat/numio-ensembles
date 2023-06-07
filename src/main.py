@@ -30,15 +30,7 @@ app = typer.Typer(cls=OrderCommands)
 
 
 @app.command()
-def simple(
-    partition: Annotated[
-        str,
-        typer.Option(
-            "--partition",
-            "-p",
-        ),
-    ] = "west"
-):
+def simple():
     """
     This performs a benchmark run
     with sensible defaults.
@@ -81,6 +73,17 @@ def main(
             + "such as numio-adios2 or numio-posix",
         ),
     ] = "numio-posix",
+    nodes: Annotated[
+        int,
+        typer.Option(
+            "--node-count",
+            "-n",
+            help=(
+                "how many nodes should be used for this test, "
+                "if not specified then mpirun will pick for you"
+            ),
+        ),
+    ] = None,
 ):
     """
     this is a script designed to help you quickly run numio benchmarks.
@@ -94,6 +97,7 @@ def main(
     loglevel.init_logging()
     global_vars.NUMIO_PATH = numio_path
     global_vars.MPIRUN_PATH = mpirun_path
+    global_vars.NODE_COUNT = nodes
 
 
 if __name__ == "__main__":

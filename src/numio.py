@@ -29,6 +29,15 @@ class ReadModel:
             (f"freq={self.frequency}," f"path={self.filepath}"),
         ]
 
+    def printables(self) -> [(str, str)]:
+        """
+        get printables for this
+        """
+        return [
+            (str(self.frequency), "frequency"),
+            (str(self.filepath), "read path"),
+        ]
+
 
 @dataclass
 class MatrixModel:
@@ -39,6 +48,21 @@ class MatrixModel:
     iterations: int = 200000
     size: int = 5000
     use_perturbation_function: bool = True
+
+    def printables(self) -> [(str, str)]:
+        """
+        get printables for this
+        """
+        return [
+            (str(self.iterations), "iterations"),
+            (f"[cyan]{self.size}[/]x[cyan]{self.size}[/]", "matrix size"),
+            (
+                "(f,x) = 2 * pi^2 * sin(pi * x) * sin(pi * y)"
+                if self.use_perturbation_function
+                else "(f,x) = 0",
+                "perturbation function",
+            ),
+        ]
 
     def generate_args(self) -> [str]:
         """
@@ -64,7 +88,19 @@ class WriteModel:
     immediate_write: bool = False
     filesync: bool = True
     pattern: str = ""
-    write_path: os.path = "path.out"
+    filepath: os.path = "path.out"
+
+    def printables(self) -> [(str, str)]:
+        """
+        get printables for this
+        """
+        return [
+            (str(self.frequency), "frequency"),
+            (str(self.filepath), "read path"),
+            ("[red]off[/]" if self.filesync else "[green]on[/]", "write sync"),
+            (self.pattern, "pattern"),
+            (str(self.filepath), "write path"),
+        ]
 
     def generate_args(self) -> [str]:
         """
@@ -74,7 +110,7 @@ class WriteModel:
             "-w",
             (
                 f"freq={self.frequency},"
-                f"path={self.write_path}"
+                f"path={self.filepath}"
                 + (
                     ""
                     if self.filesync
@@ -93,6 +129,15 @@ class CommunicationModel:
 
     frequency: int = 1
     size_in_kb: int = 1
+
+    def printables(self) -> [(str, str)]:
+        """
+        get printables for this
+        """
+        return [
+            (str(self.frequency), "communication frequency"),
+            (f"{self.size_in_kb}kb", "size"),
+        ]
 
     def generate_args(self) -> [str]:
         """
@@ -123,9 +168,26 @@ class NumioModel:
         """
         pretty print this to the terminal
         """
-        pretty_print.print_boxes(
-            "NumIO setting", [(" ".join(self.generate_args()), "command")]
+        printables: [(str, str)] = (
+            [(" ".join(self.generate_args()), "command")]
+            + self.matrix_model.printables()
+            + (
+                self.read_model.printables()
+                if self.read_model
+                else [("[red]off[/]", "reading")]
+            )
+            + (
+                self.write_model.printables()
+                if self.write_model
+                else [("[red]off[/]", "writing")]
+            )
+            + (
+                self.communication_model.printables()
+                if self.communication_model
+                else [("[red]off[/]", "fake communication")]
+            )
         )
+        pretty_print.print_boxes("NumIO settings", printables)
 
     def generate_args(self) -> [str]:
         """

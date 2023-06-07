@@ -13,7 +13,30 @@ app = typer.Typer()
 
 @app.command()
 def empty(
-    # read: Annotated[bool, typer.Option("--read", "-r", "use read")] = False
+    use_all: Annotated[
+        bool,
+        typer.Option(
+            "--all",
+            "-a",
+            help="uses all operations",
+        ),
+    ] = False,
+    use_read: Annotated[
+        bool,
+        typer.Option(
+            "--read",
+            "-r",
+            help="use read operations",
+        ),
+    ] = False,
+    use_write: Annotated[
+        bool,
+        typer.Option(
+            "--write",
+            "-w",
+            help="use write operations",
+        ),
+    ] = False,
 ):
     """
     A benchmark that puts low stress on the system.
@@ -26,6 +49,8 @@ def empty(
                 size=9,
                 use_perturbation_function=False,
             ),
+            read_model=numio.ReadModel() if use_read or use_all else None,
+            write_model=numio.WriteModel() if use_write or use_all else None,
         ),
     ).run()
 

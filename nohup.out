@@ -1,350 +1,50 @@
-           this run            
-┏━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━┓
-┃ Data                ┃ Value ┃
-┡━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━┩
-│ partition           │ west  │
-│ tasks total         │ 2     │
-│ tasks per node      │ 1     │
-│ nodes               │ 2     │
-│ time before timeout │ 1     │
-└─────────────────────┴───────┘
-INFO     ⏱ finished in 12031.824004353955                                       
-
-INFO     Utilized backend:       POSIX                                          
-         Time taken:             11992.917 s                                    
-         Mem used (lower bound): 600.00 MB                                      
-         Method for calculation: Jacobi                                         
-         Lines:                  5000                                           
-         Perturbation function:  f(x,y) = 0                                     
-         Number of iterations:   200000                                         
-         Norm of error:          1.620353e-06                                   
-                                                                                
-         Total write operations across all processes: 0                         
-         Bytes written in total: 0 B                                            
-         Total throughput in writing: 0.00 B/s                                  
-         Time spent copying matrices (avg/process): 0.000 s                     
-                                                                                
-         Total read operations across all processes: 0                          
-         Bytes read in total: 0 B                                               
-         Total throughput in reading: 0.00 B/s                                  
-         Average CPU/core usage per process: 99.91 %                            
-                                                                                
-         Matrix:                                                                
-          1.0000 0.8888 0.7778 0.6665 0.5555 0.4443 0.3333 0.2220 0.0000        
-          0.8888 0.1337 0.0616 0.0525 0.0437 0.0350 0.0262 0.0175 0.1112        
-          0.7778 0.0616 0.0007 0.0003 0.0002 0.0002 0.0001 0.0002 0.2222        
-          0.6665 0.0525 0.0003 0.0000 0.0000 0.0000 0.0000 0.0001 0.3335        
-          0.5555 0.0437 0.0002 0.0000 0.0000 0.0000 0.0000 0.0002 0.4445        
-          0.4443 0.0350 0.0002 0.0000 0.0000 0.0000 0.0000 0.0002 0.5557        
-          0.3333 0.0262 0.0001 0.0000 0.0000 0.0000 0.0000 0.0003 0.6667        
-          0.2220 0.0175 0.0002 0.0001 0.0002 0.0002 0.0003 0.0007 0.7780        
-          0.0000 0.1112 0.2222 0.3335 0.4445 0.5557 0.6667 0.7780 1.0000        
-         Utilized backend:       POSIX                                          
-         Time taken:             12031.205 s                                    
-         Mem used (lower bound): 600.00 MB                                      
-         Method for calculation: Jacobi                                         
-         Lines:                  5000                                           
-         Perturbation function:  f(x,y) = 0                                     
-         Number of iterations:   200000                                         
-         Norm of error:          1.620353e-06                                   
-                                                                                
-         Total write operations across all processes: 0                         
-         Bytes written in total: 0 B                                            
-         Total throughput in writing: 0.00 B/s                                  
-         Time spent copying matrices (avg/process): 0.000 s                     
-                                                                                
-         Total read operations across all processes: 0                          
-         Bytes read in total: 0 B                                               
-         Total throughput in reading: 0.00 B/s                                  
-         Average CPU/core usage per process: 99.91 %                            
-                                                                                
-         Matrix:                                                                
-          1.0000 0.8888 0.7778 0.6665 0.5555 0.4443 0.3333 0.2220 0.0000        
-          0.8888 0.1337 0.0616 0.0525 0.0437 0.0350 0.0262 0.0175 0.1112        
-          0.7778 0.0616 0.0007 0.0003 0.0002 0.0002 0.0001 0.0002 0.2222        
-          0.6665 0.0525 0.0003 0.0000 0.0000 0.0000 0.0000 0.0001 0.3335        
-          0.5555 0.0437 0.0002 0.0000 0.0000 0.0000 0.0000 0.0002 0.4445        
-          0.4443 0.0350 0.0002 0.0000 0.0000 0.0000 0.0000 0.0002 0.5557        
-          0.3333 0.0262 0.0001 0.0000 0.0000 0.0000 0.0000 0.0003 0.6667        
-          0.2220 0.0175 0.0002 0.0001 0.0002 0.0002 0.0003 0.0007 0.7780        
-          0.0000 0.1112 0.2222 0.3335 0.4445 0.5557 0.6667 0.7780 1.0000        
-                                                                                
-                               slurm settings                               
-╭────────────────────── command ──────────────────────╮ ╭─ partition ─╮     
-│ srun --partition=west --ntasks-per-node=1 --nodes=2 │ │ west        │     
-╰─────────────────────────────────────────────────────╯ ╰─────────────╯     
-╭─ nodes ─╮                                             ╭─ tasks per node ─╮
-│ 2       │                                             │ 1                │
-╰─────────╯                                             ╰──────────────────╯
-╭─ total tasks ─╮                                       ╭─ timeout ─╮       
-│ 2             │                                       │ 1         │       
-╰───────────────╯                                       ╰───────────╯       
-                         NumIO settings                          
-╭─────────────────────────── command ───────────────────────────╮
-│ /home/oosting/IO-partdiff/numio-posix -m iter=1,size=9,pert=1 │
-╰───────────────────────────────────────────────────────────────╯
-╭─ iterations ─╮                                                 
-│ 1            │                                                 
-╰──────────────╯                                                 
-╭─ matrix size ─╮                                                
-│ 9 x 9         │                                                
-╰───────────────╯                                                
-╭─ perturbation function ─╮                                      
-│ f(x,y) = 0              │                                      
-╰─────────────────────────╯                                      
-⏱ finished in 0 days, 0 hours, 0 minutes and 0 seconds
-
-Utilized backend:       POSIX
-Time taken:             0.000 s
-Mem used (lower bound): 0.00 MB
-Method for calculation: Jacobi
-Lines:                  9
-Perturbation function:  f(x,y) = 0
-Number of iterations:   1
-Norm of error:          4.375000e-01
-
-Total write operations across all processes: 0
-Bytes written in total: 0 B
-Total throughput in writing: 0.00 B/s
-Time spent copying matrices (avg/process): 0.000 s
-
-Total read operations across all processes: 0
-Bytes read in total: 0 B
-Total throughput in reading: 0.00 B/s
-Average CPU/core usage per process: 88.00 %
-
-Matrix:
- 1.0000 0.8750 0.7500 0.6250 0.5000 0.3750 0.2500 0.1250 0.0000
- 0.8750 0.4375 0.1875 0.1562 0.1250 0.0938 0.0625 0.0625 0.1250
- 0.7500 0.1875 0.0000 0.0000 0.0000 0.0000 0.0000 0.0625 0.2500
- 0.6250 0.1562 0.0000 0.0000 0.0000 0.0000 0.0000 0.0938 0.3750
- 0.5000 0.1250 0.0000 0.0000 0.0000 0.0000 0.0000 0.1250 0.5000
- 0.3750 0.0938 0.0000 0.0000 0.0000 0.0000 0.0000 0.1562 0.6250
- 0.2500 0.0625 0.0000 0.0000 0.0000 0.0000 0.0000 0.1875 0.7500
- 0.1250 0.0625 0.0625 0.0938 0.1250 0.1562 0.1875 0.4375 0.8750
- 0.0000 0.1250 0.2500 0.3750 0.5000 0.6250 0.7500 0.8750 1.0000
-Utilized backend:       POSIX
-Time taken:             0.000 s
-Mem used (lower bound): 0.00 MB
-Method for calculation: Jacobi
-Lines:                  9
-Perturbation function:  f(x,y) = 0
-Number of iterations:   1
-Norm of error:          4.375000e-01
-
-Total write operations across all processes: 0
-Bytes written in total: 0 B
-Total throughput in writing: 0.00 B/s
-Time spent copying matrices (avg/process): 0.000 s
-
-Total read operations across all processes: 0
-Bytes read in total: 0 B
-Total throughput in reading: 0.00 B/s
-Average CPU/core usage per process: 92.00 %
-
-Matrix:
- 1.0000 0.8750 0.7500 0.6250 0.5000 0.3750 0.2500 0.1250 0.0000
- 0.8750 0.4375 0.1875 0.1562 0.1250 0.0938 0.0625 0.0625 0.1250
- 0.7500 0.1875 0.0000 0.0000 0.0000 0.0000 0.0000 0.0625 0.2500
- 0.6250 0.1562 0.0000 0.0000 0.0000 0.0000 0.0000 0.0938 0.3750
- 0.5000 0.1250 0.0000 0.0000 0.0000 0.0000 0.0000 0.1250 0.5000
- 0.3750 0.0938 0.0000 0.0000 0.0000 0.0000 0.0000 0.1562 0.6250
- 0.2500 0.0625 0.0000 0.0000 0.0000 0.0000 0.0000 0.1875 0.7500
- 0.1250 0.0625 0.0625 0.0938 0.1250 0.1562 0.1875 0.4375 0.8750
- 0.0000 0.1250 0.2500 0.3750 0.5000 0.6250 0.7500 0.8750 1.0000
-
-                               slurm settings                               
-╭────────────────────── command ──────────────────────╮ ╭─ partition ─╮     
-│ srun --partition=west --ntasks-per-node=1 --nodes=2 │ │ west        │     
-╰─────────────────────────────────────────────────────╯ ╰─────────────╯     
-╭─ nodes ─╮                                             ╭─ tasks per node ─╮
-│ 2       │                                             │ 1                │
-╰─────────╯                                             ╰──────────────────╯
-╭─ total tasks ─╮                                       ╭─ timeout ─╮       
-│ 2             │                                       │ 1         │       
-╰───────────────╯                                       ╰───────────╯       
-                         NumIO settings                          
-╭─────────────────────────── command ───────────────────────────╮
-│ /home/oosting/IO-partdiff/numio-posix -m iter=1,size=9,pert=1 │
-╰───────────────────────────────────────────────────────────────╯
-╭─ iterations ─╮                                                 
-│ 1            │                                                 
-╰──────────────╯                                                 
-╭─ matrix size ─╮                                                
-│ 9 x 9         │                                                
-╰───────────────╯                                                
-╭─ perturbation function ─╮                                      
-│ f(x,y) = 0              │                                      
-╰─────────────────────────╯                                      
-⏱ finished in 0 days, 0 hours, 0 minutes and 0 seconds
-
-Utilized backend:       POSIX
-Time taken:             0.000 s
-Mem used (lower bound): 0.00 MB
-Method for calculation: Jacobi
-Lines:                  9
-Perturbation function:  f(x,y) = 0
-Number of iterations:   1
-Norm of error:          4.375000e-01
-
-Total write operations across all processes: 0
-Bytes written in total: 0 B
-Total throughput in writing: 0.00 B/s
-Time spent copying matrices (avg/process): 0.000 s
-
-Total read operations across all processes: 0
-Bytes read in total: 0 B
-Total throughput in reading: 0.00 B/s
-Average CPU/core usage per process: 85.19 %
-
-Matrix:
- 1.0000 0.8750 0.7500 0.6250 0.5000 0.3750 0.2500 0.1250 0.0000
- 0.8750 0.4375 0.1875 0.1562 0.1250 0.0938 0.0625 0.0625 0.1250
- 0.7500 0.1875 0.0000 0.0000 0.0000 0.0000 0.0000 0.0625 0.2500
- 0.6250 0.1562 0.0000 0.0000 0.0000 0.0000 0.0000 0.0938 0.3750
- 0.5000 0.1250 0.0000 0.0000 0.0000 0.0000 0.0000 0.1250 0.5000
- 0.3750 0.0938 0.0000 0.0000 0.0000 0.0000 0.0000 0.1562 0.6250
- 0.2500 0.0625 0.0000 0.0000 0.0000 0.0000 0.0000 0.1875 0.7500
- 0.1250 0.0625 0.0625 0.0938 0.1250 0.1562 0.1875 0.4375 0.8750
- 0.0000 0.1250 0.2500 0.3750 0.5000 0.6250 0.7500 0.8750 1.0000
-Utilized backend:       POSIX
-Time taken:             0.000 s
-Mem used (lower bound): 0.00 MB
-Method for calculation: Jacobi
-Lines:                  9
-Perturbation function:  f(x,y) = 0
-Number of iterations:   1
-Norm of error:          4.375000e-01
-
-Total write operations across all processes: 0
-Bytes written in total: 0 B
-Total throughput in writing: 0.00 B/s
-Time spent copying matrices (avg/process): 0.000 s
-
-Total read operations across all processes: 0
-Bytes read in total: 0 B
-Total throughput in reading: 0.00 B/s
-Average CPU/core usage per process: 82.14 %
-
-Matrix:
- 1.0000 0.8750 0.7500 0.6250 0.5000 0.3750 0.2500 0.1250 0.0000
- 0.8750 0.4375 0.1875 0.1562 0.1250 0.0938 0.0625 0.0625 0.1250
- 0.7500 0.1875 0.0000 0.0000 0.0000 0.0000 0.0000 0.0625 0.2500
- 0.6250 0.1562 0.0000 0.0000 0.0000 0.0000 0.0000 0.0938 0.3750
- 0.5000 0.1250 0.0000 0.0000 0.0000 0.0000 0.0000 0.1250 0.5000
- 0.3750 0.0938 0.0000 0.0000 0.0000 0.0000 0.0000 0.1562 0.6250
- 0.2500 0.0625 0.0000 0.0000 0.0000 0.0000 0.0000 0.1875 0.7500
- 0.1250 0.0625 0.0625 0.0938 0.1250 0.1562 0.1875 0.4375 0.8750
- 0.0000 0.1250 0.2500 0.3750 0.5000 0.6250 0.7500 0.8750 1.0000
-
 DEBUG    initialized logging                                                    
-DEBUG    mpirun path: mpirun                                                    
-      mpirun settings      
-╭── command ──╮ ╭─ nodes ─╮
-│ mpirun -n 2 │ │ 2       │
-╰─────────────╯ ╰─────────╯
-                                 NumIO settings                                 
+DEBUG    mpirun args: ['mpirun', '-n', '2']                                     
+           mpirun settings            
+╭── command ──╮ ╭─ nodes ─╮ ╭─ path ─╮
+│ mpirun -n 2 │ │ 2       │ │ mpirun │
+╰─────────────╯ ╰─────────╯ ╰────────╯
+DEBUG    numio args: ['/home/oosting/IO-partdiff/numio-posix', '-m',            
+         'iter=1,size=9,pert=1', '-r', 'freq=1,path=path.out', '-w',            
+         'freq=1,path=path.out', '-t', '1']                                     
+                                 NumIO setting                                  
 ╭────────────────────────────────── command ───────────────────────────────────╮
-│ /home/oosting/IO-partdiff/numio-posix -m iter=1,size=9,pert=1 -w             │
-│ freq=1,path=path.out -r freq=1,path=path.out -c freq=1,size=1 -t 1           │
+│ /home/oosting/IO-partdiff/numio-posix -m iter=1,size=9,pert=1 -r             │
+│ freq=1,path=path.out -w freq=1,path=path.out -t 1                            │
 ╰──────────────────────────────────────────────────────────────────────────────╯
-╭─ iterations ─╮                                                                
-│ 1            │                                                                
-╰──────────────╯                                                                
-╭─ matrix size ─╮                                                               
-│ 9 x 9         │                                                               
-╰───────────────╯                                                               
-╭─ perturbation function ─╮                                                     
-│ f(x,y) = 0              │                                                     
-╰─────────────────────────╯                                                     
-╭─ write frequency ─╮                                                           
-│ 1                 │                                                           
-╰───────────────────╯                                                           
-╭─ immediate write ─╮                                                           
-│ False             │                                                           
-╰───────────────────╯                                                           
-DEBUG    mpirun path: mpirun                                                    
-Traceback (most recent call last):
-  File "/home/oosting/ensembles/./src/main.py", line 12, in <module>
-    import advanced
-  File "/home/oosting/ensembles/src/advanced.py", line 7, in <module>
-    import batch
-  File "/home/oosting/ensembles/src/batch.py", line 14, in <module>
-    from numio import NumioModel
-  File "/home/oosting/ensembles/src/numio.py", line 13, in <module>
-    class NumioModel:
-  File "/home/oosting/ensembles/src/numio.py", line 31, in NumioModel
-    read_model: Optional[ReadModel] = None
-NameError: name 'Optional' is not defined
-DEBUG    initialized logging                                                    
-╭───────────────────── Traceback (most recent call last) ──────────────────────╮
-│ /home/oosting/ensembles/./src/main.py:100 in <module>                        │
-│                                                                              │
-│    97                                                                        │
-│    98                                                                        │
-│    99 if __name__ == "__main__":                                             │
-│ ❱ 100 │   app()                                                              │
-│   101                                                                        │
-│                                                                              │
-│ ╭───────────────────────────────── locals ─────────────────────────────────╮ │
-│ │      advanced = <module 'advanced' from                                  │ │
-│ │                 '/home/oosting/ensembles/src/advanced.py'>               │ │
-│ │     Annotated = <class 'typing.Annotated'>                               │ │
-│ │           app = <typer.main.Typer object at 0x7f0e47140fd0>              │ │
-│ │         batch = <module 'batch' from                                     │ │
-│ │                 '/home/oosting/ensembles/src/batch.py'>                  │ │
-│ │       Context = <class 'click.core.Context'>                             │ │
-│ │   global_vars = <module 'global_vars' from                               │ │
-│ │                 '/home/oosting/ensembles/src/global_vars.py'>            │ │
-│ │      LOGLEVEL = <enum 'LOGLEVEL'>                                        │ │
-│ │          main = <function main at 0x7f0e4670a5e0>                        │ │
-│ │ OrderCommands = <class '__main__.OrderCommands'>                         │ │
-│ │          Path = <class 'pathlib.Path'>                                   │ │
-│ │        simple = <function simple at 0x7f0e4670a550>                      │ │
-│ │         slurm = <module 'slurm' from                                     │ │
-│ │                 '/home/oosting/ensembles/src/slurm.py'>                  │ │
-│ │         typer = <module 'typer' from                                     │ │
-│ │                 '/home/oosting/ensembles/env/lib/python3.9/site-package… │ │
-│ │    TyperGroup = <class 'typer.core.TyperGroup'>                          │ │
-│ ╰──────────────────────────────────────────────────────────────────────────╯ │
-│                                                                              │
-│ /home/oosting/ensembles/env/lib/python3.9/site-packages/typer/main.py:328 in │
-│ __call__                                                                     │
-│                                                                              │
-│ /home/oosting/ensembles/env/lib/python3.9/site-packages/typer/main.py:311 in │
-│ __call__                                                                     │
-│                                                                              │
-│ /home/oosting/ensembles/env/lib/python3.9/site-packages/click/core.py:1130   │
-│ in __call__                                                                  │
-│                                                                              │
-│ /home/oosting/ensembles/env/lib/python3.9/site-packages/typer/core.py:778 in │
-│ main                                                                         │
-│                                                                              │
-│ /home/oosting/ensembles/env/lib/python3.9/site-packages/typer/core.py:216 in │
-│ _main                                                                        │
-│                                                                              │
-│ /home/oosting/ensembles/env/lib/python3.9/site-packages/click/core.py:1657   │
-│ in invoke                                                                    │
-│                                                                              │
-│ /home/oosting/ensembles/env/lib/python3.9/site-packages/click/core.py:1655   │
-│ in invoke                                                                    │
-│                                                                              │
-│ /home/oosting/ensembles/env/lib/python3.9/site-packages/click/core.py:920 in │
-│ make_context                                                                 │
-│                                                                              │
-│ /home/oosting/ensembles/env/lib/python3.9/site-packages/click/core.py:1374   │
-│ in parse_args                                                                │
-│                                                                              │
-│ /home/oosting/ensembles/env/lib/python3.9/site-packages/click/core.py:1289   │
-│ in make_parser                                                               │
-│                                                                              │
-│ /home/oosting/ensembles/env/lib/python3.9/site-packages/click/core.py:2674   │
-│ in add_to_parser                                                             │
-│                                                                              │
-│ /home/oosting/ensembles/env/lib/python3.9/site-packages/click/parser.py:309  │
-│ in add_option                                                                │
-│                                                                              │
-│ /home/oosting/ensembles/env/lib/python3.9/site-packages/click/parser.py:176  │
-│ in __init__                                                                  │
-╰──────────────────────────────────────────────────────────────────────────────╯
-ValueError: Invalid start character for option (use read)
+DEBUG    mpirun args: ['mpirun', '-n', '2']                                     
+DEBUG    numio args: ['/home/oosting/IO-partdiff/numio-posix', '-m',            
+         'iter=1,size=9,pert=1', '-r', 'freq=1,path=path.out', '-w',            
+         'freq=1,path=path.out', '-t', '1']                                     
+⏱ finished in 0 days, 19.0 hours, 4.0 minutes and 17 seconds
+
+Utilized backend:       POSIX
+Time taken:             68656.396 s
+Mem used (lower bound): 0.00 MB
+Method for calculation: Jacobi
+Lines:                  9
+Perturbation function:  f(x,y) = 0
+Number of iterations:   1
+Norm of error:          3.869629e-02
+
+Total write operations across all processes: 2
+Bytes written in total: 648 B
+Total throughput in writing: 22403.54 B/s
+Time spent copying matrices (avg/process): 0.000 s
+
+Total read operations across all processes: 2
+Bytes read in total: 648 B
+Total throughput in reading: 0.02 B/s
+Average CPU/core usage per process: 100.00 %
+
+Matrix:
+ 1.0000 0.8750 0.7500 0.6250 0.5000 0.3750 0.2500 0.1250 0.0000
+ 0.8750 0.6838 0.5223 0.3950 0.3027 0.2310 0.1788 0.1453 0.1250
+ 0.7500 0.5223 0.3369 0.2198 0.1523 0.1259 0.1338 0.1788 0.2500
+ 0.6250 0.3950 0.2198 0.1130 0.0703 0.0735 0.1259 0.2310 0.3750
+ 0.5000 0.3027 0.1523 0.0703 0.0449 0.0703 0.1523 0.3027 0.5000
+ 0.3750 0.2310 0.1259 0.0735 0.0703 0.1130 0.2198 0.3950 0.6250
+ 0.2500 0.1788 0.1338 0.1259 0.1523 0.2198 0.3369 0.5223 0.7500
+ 0.1250 0.1453 0.1788 0.2310 0.3027 0.3950 0.5223 0.6838 0.8750
+ 0.0000 0.1250 0.2500 0.3750 0.5000 0.6250 0.7500 0.8750 1.0000
+
