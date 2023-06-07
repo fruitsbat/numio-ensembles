@@ -24,6 +24,7 @@ def print_boxes(
             to_be_boxed[0],
             title=to_be_boxed[1],
             border_style="yellow",
+            style="cyan",
         )
 
     rich.print(

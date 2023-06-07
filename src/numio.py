@@ -98,7 +98,7 @@ class WriteModel:
             (str(self.frequency), "frequency"),
             (str(self.filepath), "read path"),
             ("[red]off[/]" if self.filesync else "[green]on[/]", "write sync"),
-            (self.pattern, "pattern"),
+            (self.pattern if self.pattern else "[red]none[/]", "pattern"),
             (str(self.filepath), "write path"),
         ]
 
