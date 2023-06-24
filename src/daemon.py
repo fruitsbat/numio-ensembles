@@ -13,6 +13,11 @@ from numio import CommunicationModel, MatrixModel, NumioModel, ReadModel, WriteM
 
 
 class Daemon:
+    """
+    a daemon to run.
+    these are useful for creating background noise
+    """
+
     firstRun: bool = True
 
     def __init__(self, commands: List[str], name: str):
@@ -25,15 +30,18 @@ class Daemon:
         else:
             logging.info("restarting process of type: " + self.name)
         self.firstRun = False
-        result = subprocess.run(
+        result = (
+            subprocess.run(
                 MPIRunModel().generate_args() + self.commands,
                 check=True,
                 capture_output=True,
-        ),
-        
-        # start this again when it finishes
+            ),
+        )
+
         logging.info("process of type: " + self.name + " has finished")
-        if  result[0].returncode == 0:
+        if result[0].returncode == 0:
+            # start this again when it finishes
+            # to keep usage levels similar throughout benchmark
             self.run()
         else:
             logging.error("failed to run background noise daemon: " + result[0].stderr)
@@ -53,6 +61,7 @@ def run(daemons: List[Daemon]):
 def sleepy() -> Daemon:
     """
     a daemon that reserves a thread but doesn't do anything
+    this is for simulating an idle system
     """
     return Daemon(
         commands=["sleep", "5000"],
@@ -63,24 +72,52 @@ def sleepy() -> Daemon:
 def chatty() -> Daemon:
     """
     a very talkative daemon, uses a lot of network
+    this simulates big files being sent around
     """
     return Daemon(
         commands=NumioModel(
-            communication_model=CommunicationModel(size_in_kb=100000),
-            matrix_model=MatrixModel(iterations=200000, size=9, use_perturbation_function=False),
+            # a lot of communication
+            communication_model=CommunicationModel(size_in_kb=400000000, frequency=1,),
+            # but not a whole lot else
+            matrix_model=MatrixModel(
+                size=9, use_perturbation_function=False
+            ),
+            write_model=None,
+            read_model=None,
         ).generate_args(),
         name="chatty",
     )
 
+
 def cpu() -> Daemon:
     """
     a daemon that uses a lot of cpu
+    this is similar to the workload of compiling a program
     """
     return Daemon(
         commands=NumioModel(
-            write_model=WriteModel(frequency=0,),
-            communication_model=CommunicationModel(frequency=0),
-            read_model=ReadModel(frequency=0),
+            write_model=None,
+            communication_model=None,
+            read_model=None,
         ).generate_args(),
-        name="cpu"
+        name="cpu",
+    )
+
+
+def disk() -> Daemon:
+    """
+    a daemon that slows down diskIO
+    this is similar to the workload of someone running a large grep
+    """
+    return Daemon(
+        commands=NumioModel(
+            write_model=WriteModel(frequency=1),
+            read_model=ReadModel(frequency=2),
+            communication_model=None,
+            matrix_model=MatrixModel(
+                size=9,
+                use_perturbation_function=False,
+            ),
+        ).generate_args(),
+        name="disk",
     )

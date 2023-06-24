@@ -79,6 +79,7 @@ def balanced():
         [
             daemon.chatty(),
             daemon.cpu(),
+            daemon.disk(),
         ]
     )
 
@@ -133,6 +134,18 @@ def peak(
     """
     A benchmark that puts a high level of stress on the system.
     """
+    
+    daemon.run(
+        [
+            daemon.chatty(),
+            daemon.cpu(),
+            daemon.disk(),
+            daemon.chatty(),
+            daemon.cpu(),
+            daemon.disk(),
+        ]
+    )
+
     batch.BatchScript(
         slurm_model=mpirun.MPIRunModel(),
         numio_model=numio.NumioModel(
