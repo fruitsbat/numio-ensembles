@@ -13,6 +13,7 @@ import advanced
 import batch
 import global_vars
 import slurm
+import mpi4py
 
 
 # return commands in a more reasonable order than alphabetical
@@ -97,7 +98,12 @@ def main(
     loglevel.init_logging()
     global_vars.NUMIO_PATH = numio_path
     global_vars.MPIRUN_PATH = mpirun_path
-    global_vars.NODE_COUNT = nodes
+
+    # if not specified get node count form mpi
+    if not nodes:
+        global_vars.NODE_COUNT = mpi4py.MPI.COMM_WORLD.Get_size()
+    else:
+        global_vars.NODE_COUNT = nodes
 
 
 if __name__ == "__main__":
