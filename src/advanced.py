@@ -2,11 +2,14 @@
 this module defines the cli interface for advanced mode
 """
 
+from typing import List
 from typing_extensions import Annotated
 import typer
 import batch
+import daemon
+from daemon import Daemon
 import numio
-import slurm
+import mpirun
 
 app = typer.Typer()
 
@@ -42,7 +45,7 @@ def empty(
     A benchmark that puts low stress on the system.
     """
     batch.BatchScript(
-        slurm_model=slurm.SlurmModel(),
+        slurm_model=mpirun.MPIRunModel(),
         numio_model=numio.NumioModel(
             matrix_model=numio.MatrixModel(
                 iterations=2,
@@ -71,8 +74,16 @@ def balanced():
     """
     A benchmark that puts medium stress on the system.
     """
+
+    daemon.run(
+        [
+            daemon.chatty(),
+            daemon.cpu(),
+        ]
+    )
+
     batch.BatchScript(
-        slurm_model=slurm.SlurmModel(),
+        slurm_model=mpirun.MPIRunModel(),
         numio_model=numio.NumioModel(
             matrix_model=numio.MatrixModel(
                 size=50,
@@ -123,7 +134,7 @@ def peak(
     A benchmark that puts a high level of stress on the system.
     """
     batch.BatchScript(
-        slurm_model=slurm.SlurmModel(),
+        slurm_model=mpirun.MPIRunModel(),
         numio_model=numio.NumioModel(
             matrix_model=numio.MatrixModel(
                 size=500,

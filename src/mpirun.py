@@ -4,13 +4,14 @@ slurm specific things
 
 from dataclasses import dataclass
 import logging
+from typing import List
 
 import global_vars
 import pretty_print
 
 
 @dataclass
-class SlurmModel:
+class MPIRunModel:
     """
     stores srun cli args
     """
@@ -24,23 +25,19 @@ class SlurmModel:
             [
                 (" ".join(self.generate_args()), "command"),
                 (
-                    str(global_vars.NODE_COUNT)
-                    if global_vars.NODE_COUNT
-                    else "1",
+                    str(global_vars.NODE_COUNT) if global_vars.NODE_COUNT else "1",
                     "nodes",
                 ),
                 (str(global_vars.MPIRUN_PATH), "path"),
             ],
         )
 
-    def generate_args(self) -> [str]:
+    def generate_args(self) -> List[str]:
         """
         arguments to use srun
         """
         args = [
             str(global_vars.MPIRUN_PATH),
-            "-ppn",
-            "1",
             "-n",
         ]
 

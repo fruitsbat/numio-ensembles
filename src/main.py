@@ -12,22 +12,11 @@ from config import LOGLEVEL
 import advanced
 import batch
 import global_vars
-import slurm
-import mpi4py
+import mpirun
+from mpi4py import MPI
 
 
-# return commands in a more reasonable order than alphabetical
-class OrderCommands(TyperGroup):
-    """
-    used to order commands in the help prompt in order of appearance
-    instead of alphabetically
-    """
-
-    def list_commands(self, ctx: Context):
-        return list(self.commands)  # return commands in order of appearance
-
-
-app = typer.Typer(cls=OrderCommands)
+app = typer.Typer()
 
 
 @app.command()
@@ -38,7 +27,7 @@ def simple():
     Use this if you just want to
     quickly run your benchmark.
     """
-    batch.BatchScript(slurm_model=slurm.SlurmModel()).run()
+    batch.BatchScript(slurm_model=mpirun.MPIRunModel()).run()
 
 
 app.add_typer(
@@ -100,8 +89,9 @@ def main(
     global_vars.MPIRUN_PATH = mpirun_path
 
     # if not specified get node count form mpi
-    if not nodes:
-        global_vars.NODE_COUNT = mpi4py.MPI.COMM_WORLD.Get_size()
+    if nodes is None or nodes <= 0:
+        global_vars.NODE_COUNT = MPI.COMM_WORLD.size
+        print(global_vars.NODE_COUNT)
     else:
         global_vars.NODE_COUNT = nodes
 

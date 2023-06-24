@@ -10,7 +10,7 @@ import rich
 from rich.progress import Progress, SpinnerColumn, TextColumn
 from dateutil.relativedelta import relativedelta as rd
 
-from slurm import SlurmModel
+from mpirun import MPIRunModel
 from numio import NumioModel
 
 
@@ -22,7 +22,7 @@ class BatchScript:
     # pylint: disable=too-many-arguments
     def __init__(
         self,
-        slurm_model: SlurmModel = SlurmModel(),
+        slurm_model: MPIRunModel = MPIRunModel(),
         numio_model: NumioModel = NumioModel(),
     ):
         self.numio = numio_model
