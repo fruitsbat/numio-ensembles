@@ -58,17 +58,6 @@ def run(daemons: List[Daemon]):
         thread.start()
 
 
-def sleepy() -> Daemon:
-    """
-    a daemon that reserves a thread but doesn't do anything
-    this is for simulating an idle system
-    """
-    return Daemon(
-        commands=["sleep", "5000"],
-        name="sleepy",
-    )
-
-
 def chatty() -> Daemon:
     """
     a very talkative daemon, uses a lot of network
@@ -77,11 +66,12 @@ def chatty() -> Daemon:
     return Daemon(
         commands=NumioModel(
             # a lot of communication
-            communication_model=CommunicationModel(size_in_kb=400000000, frequency=1,),
-            # but not a whole lot else
-            matrix_model=MatrixModel(
-                size=9, use_perturbation_function=False
+            communication_model=CommunicationModel(
+                size_in_kb=9999999999999999,
+                frequency=1,
             ),
+            # but not a whole lot else
+            matrix_model=MatrixModel(use_perturbation_function=False),
             write_model=None,
             read_model=None,
         ).generate_args(),
