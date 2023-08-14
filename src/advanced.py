@@ -2,14 +2,13 @@
 this module defines the cli interface for advanced mode
 """
 
-from typing import List
 from typing_extensions import Annotated
 import typer
 import batch
 import daemon
-from daemon import Daemon
 import numio
 import mpirun
+import logging
 
 app = typer.Typer()
 
@@ -134,7 +133,7 @@ def peak(
     """
     A benchmark that puts a high level of stress on the system.
     """
-    
+
     daemon.run(
         [
             daemon.chatty(),
@@ -170,4 +169,25 @@ def peak(
                 frequency=2,
             ),
         ),
+    ).run()
+
+
+@app.command()
+def custom(
+    chatty: Annotated[
+        int, typer.Option("--chatty", help="how many chatty background daemons to use")
+    ],
+    cpu: Annotated[int, typer.Option("--cpu", help="how many cpu daemons to use")],
+    disk: Annotated[int, typer.Option("--disk", help="how many disk daemons to use")],
+):
+    daemons = []
+    daemons = daemons + [daemon.chatty()] * chatty
+    daemons = daemons + [daemon.cpu()] * cpu
+    daemons = daemons + [daemon.disk()] * disk
+
+    daemon.run(daemons)
+
+    batch.BatchScript(
+        slurm_model=mpirun.MPIRunModel(),
+        numio_model=numio.NumioModel(),
     ).run()
