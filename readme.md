@@ -1,2 +1,1 @@
-# todo
-[ ] determine number of nodes for simple run
+read the docs [here](https://fruitsbat.github.io/numio-ensembles-book)
