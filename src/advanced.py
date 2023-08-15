@@ -8,7 +8,6 @@ import batch
 import daemon
 import numio
 import mpirun
-import logging
 
 app = typer.Typer()
 

@@ -14,6 +14,7 @@ import batch
 import global_vars
 import mpirun
 from mpi4py import MPI
+import advanced
 
 
 app = typer.Typer()
@@ -27,7 +28,7 @@ def simple():
     Use this if you just want to
     quickly run your benchmark.
     """
-    batch.BatchScript(slurm_model=mpirun.MPIRunModel()).run()
+    advanced.balanced()
 
 
 app.add_typer(
