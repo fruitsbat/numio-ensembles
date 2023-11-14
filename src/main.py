@@ -4,17 +4,12 @@ cli for the main page
 """
 
 from pathlib import Path
-from typer.core import TyperGroup
 import typer
-from click import Context
 from typing_extensions import Annotated
 from config import LOGLEVEL
 import advanced
-import batch
 import global_vars
-import mpirun
 from mpi4py import MPI
-import advanced
 
 
 app = typer.Typer()
@@ -45,7 +40,7 @@ def main(
     loglevel: Annotated[
         LOGLEVEL,
         typer.Option("--loglevel", "-l", help="adjust chattyness of app"),
-    ] = LOGLEVEL.INFO.value,
+    ] = "info", # type: ignore
     mpirun_path: Annotated[
         Path,
         typer.Option(
@@ -53,7 +48,7 @@ def main(
             "-mr",
             help="what command to use for mpirun",
         ),
-    ] = "mpirun",
+    ] = Path("mpirun"),
     numio_path: Annotated[
         Path,
         typer.Option(
@@ -63,18 +58,15 @@ def main(
             + "should work for all different ones "
             + "such as numio-adios2 or numio-posix",
         ),
-    ] = "numio-posix",
+    ] = Path("numio-posix"),
     nodes: Annotated[
         int,
         typer.Option(
             "--node-count",
             "-n",
-            help=(
-                "how many nodes should be used for this test, "
-                "if not specified then mpirun will pick for you"
-            ),
+            help=("how many nodes should be used for this test, " "defaults to 4"),
         ),
-    ] = None,
+    ] = 4,
 ):
     """
     this is a script designed to help you quickly run numio benchmarks.
@@ -90,7 +82,7 @@ def main(
     global_vars.MPIRUN_PATH = mpirun_path
 
     # if not specified get node count form mpi
-    if nodes is None or nodes <= 0:
+    if nodes <= 0:
         global_vars.NODE_COUNT = MPI.COMM_WORLD.size
         print(global_vars.NODE_COUNT)
     else:

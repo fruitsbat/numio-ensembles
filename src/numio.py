@@ -3,8 +3,8 @@ things for working with numio
 """
 
 from dataclasses import dataclass
-from typing import Optional
-import os
+from typing import List, Optional, Tuple
+from pathlib import Path
 import logging
 
 import global_vars
@@ -18,9 +18,9 @@ class ReadModel:
     """
 
     frequency: int = 1
-    filepath: os.path = "path.out"
+    filepath: Path = Path("path.out")
 
-    def generate_args(self) -> [str]:
+    def generate_args(self) -> List[str]:
         """
         args for reading
         """
@@ -29,7 +29,7 @@ class ReadModel:
             (f"freq={self.frequency}," f"path={self.filepath}"),
         ]
 
-    def printables(self) -> [(str, str)]:
+    def printables(self) -> List[Tuple[str, str]]:
         """
         get printables for this
         """
@@ -49,7 +49,7 @@ class MatrixModel:
     size: int = 5000
     use_perturbation_function: bool = True
 
-    def printables(self) -> [(str, str)]:
+    def printables(self) -> List[Tuple[str, str]]:
         """
         get printables for this
         """
@@ -64,7 +64,7 @@ class MatrixModel:
             ),
         ]
 
-    def generate_args(self) -> [str]:
+    def generate_args(self) -> List[str]:
         """
         get args to control the matrix
         """
@@ -88,9 +88,9 @@ class WriteModel:
     immediate_write: bool = False
     filesync: bool = True
     pattern: str = ""
-    filepath: os.path = "path.out"
+    filepath: Path = Path("path.out")
 
-    def printables(self) -> [(str, str)]:
+    def printables(self) -> List[Tuple[str, str]]:
         """
         get printables for this
         """
@@ -102,7 +102,7 @@ class WriteModel:
             (str(self.filepath), "write path"),
         ]
 
-    def generate_args(self) -> [str]:
+    def generate_args(self) -> List[str]:
         """
         cli args for controlling writing
         """
@@ -111,11 +111,7 @@ class WriteModel:
             (
                 f"freq={self.frequency},"
                 f"path={self.filepath}"
-                + (
-                    ""
-                    if self.filesync
-                    else ",nofilesync" f'pattern="{self.pattern}"'
-                )
+                + ("" if self.filesync else ",nofilesync" f'pattern="{self.pattern}"')
                 + (",imm" if self.immediate_write else "")
             ),
         ]
@@ -130,7 +126,7 @@ class CommunicationModel:
     frequency: int = 1
     size_in_kb: int = 1
 
-    def printables(self) -> [(str, str)]:
+    def printables(self) -> List[Tuple[str, str]]:
         """
         get printables for this
         """
@@ -139,7 +135,7 @@ class CommunicationModel:
             (f"{self.size_in_kb}kb", "size"),
         ]
 
-    def generate_args(self) -> [str]:
+    def generate_args(self) -> List[str]:
         """
         cli args for controlling writing
         """
@@ -168,7 +164,7 @@ class NumioModel:
         """
         pretty print this to the terminal
         """
-        printables: [(str, str)] = (
+        printables: List[Tuple[str, str]] = (
             [(" ".join(self.generate_args()), "command")]
             + self.matrix_model.printables()
             + (
@@ -189,11 +185,11 @@ class NumioModel:
         )
         pretty_print.print_boxes("NumIO settings", printables)
 
-    def generate_args(self) -> [str]:
+    def generate_args(self) -> List[str]:
         """
         numio args
         """
-        args = [
+        args: List[str] = [
             f"{global_vars.NUMIO_PATH}",
         ] + self.matrix_model.generate_args()
 

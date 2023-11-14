@@ -5,7 +5,6 @@ helper to start background noise jobs as daemons
 import logging
 import threading
 from typing import List
-from concurrent.futures import ThreadPoolExecutor as Pool
 import subprocess
 
 from mpirun import MPIRunModel
@@ -44,7 +43,9 @@ class Daemon:
             # to keep usage levels similar throughout benchmark
             self.run()
         else:
-            logging.error("failed to run background noise daemon: " + result[0].stderr)
+            logging.error(
+                "failed to run background noise daemon: " + str(result[0].stderr)
+            )
 
 
 def run(daemons: List[Daemon]):

@@ -2,10 +2,12 @@
 this module defines the cli interface for advanced mode
 """
 
+from typing import List
 from typing_extensions import Annotated
 import typer
 import batch
 import daemon
+from daemon import Daemon
 import numio
 import mpirun
 
@@ -77,7 +79,7 @@ def custom(
     cpu: Annotated[int, typer.Option("--cpu", help="how many cpu daemons to use")],
     disk: Annotated[int, typer.Option("--disk", help="how many disk daemons to use")],
 ):
-    daemons = []
+    daemons: List[Daemon] = []
     daemons = daemons + [daemon.chatty()] * chatty
     daemons = daemons + [daemon.cpu()] * cpu
     daemons = daemons + [daemon.disk()] * disk
