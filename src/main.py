@@ -4,6 +4,7 @@ cli for the main page
 """
 
 from pathlib import Path
+from typing import Optional
 import typer
 from typing_extensions import Annotated
 from config import LOGLEVEL
@@ -40,7 +41,7 @@ def main(
     loglevel: Annotated[
         LOGLEVEL,
         typer.Option("--loglevel", "-l", help="adjust chattyness of app"),
-    ] = "info", # type: ignore
+    ] = "info",  # type: ignore
     mpirun_path: Annotated[
         Path,
         typer.Option(
@@ -60,13 +61,13 @@ def main(
         ),
     ] = Path("numio-posix"),
     nodes: Annotated[
-        int,
+        Optional[int],
         typer.Option(
             "--node-count",
             "-n",
             help=("how many nodes should be used for this test, " "defaults to 4"),
         ),
-    ] = 4,
+    ] = None,
 ):
     """
     this is a script designed to help you quickly run numio benchmarks.
@@ -75,14 +76,13 @@ def main(
     these are shared resources,
     so performance issues related to them would be hard to find
     using an isolated program.
-
     """
     loglevel.init_logging()
     global_vars.NUMIO_PATH = numio_path
     global_vars.MPIRUN_PATH = mpirun_path
 
     # if not specified get node count form mpi
-    if nodes <= 0:
+    if (nodes == None) or (nodes <= 0):
         global_vars.NODE_COUNT = MPI.COMM_WORLD.size
         print(global_vars.NODE_COUNT)
     else:

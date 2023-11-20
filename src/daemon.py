@@ -6,6 +6,7 @@ import logging
 import threading
 from typing import List
 import subprocess
+import platform
 
 from mpirun import MPIRunModel
 from numio import CommunicationModel, MatrixModel, NumioModel, ReadModel, WriteModel
@@ -25,7 +26,7 @@ class Daemon:
 
     def run(self):
         if self.firstRun:
-            logging.info("starting process of type: " + self.name)
+            logging.info(f"starting process of type: {self.name} on {platform.node()}")
         else:
             logging.info("restarting process of type: " + self.name)
         self.firstRun = False

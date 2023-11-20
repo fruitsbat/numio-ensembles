@@ -58,7 +58,7 @@ class BatchScript:
                 )
                 start_time = time.perf_counter()
                 script_results = script_handle.communicate()
-                time_taken = rd(seconds=time.perf_counter() - start_time)
+                time_taken = rd(seconds=int(time.perf_counter() - start_time))
                 rich.print(
                     (
                         ":stopwatch: "
