@@ -4,7 +4,7 @@ run:
 
 alloc:
     salloc -p west -N 1
-
+ 
 # balanced run of numio
 run-balanced:
     mpirun -N 1 python3 ./src/main.py -nio /home/oosting/IO-partdiff/numio-posix advanced balanced

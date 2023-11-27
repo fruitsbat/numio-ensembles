@@ -11,6 +11,7 @@ from config import LOGLEVEL
 import advanced
 import global_vars
 from mpi4py import MPI
+import platform
 
 
 app = typer.Typer()
@@ -34,6 +35,12 @@ app.add_typer(
     + " "
     + "Use this if you want more fine grained control of the script.",
 )
+
+
+@app.command()
+def hostnames():
+    rank = global_vars.COMM.Get_rank()
+    print(f"current rank: {rank}, hostname: {platform.node()}")
 
 
 @app.callback()

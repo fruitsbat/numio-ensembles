@@ -34,7 +34,7 @@ class MPIRunModel:
 
     def generate_args(self) -> List[str]:
         """
-        arguments to use srun
+        arguments to use mpirun
         """
         args = [
             str(global_vars.MPIRUN_PATH),
@@ -48,3 +48,15 @@ class MPIRunModel:
         logging.debug("mpirun args: %s", args)
 
         return args
+
+
+@dataclass
+class SrunModel:
+    """
+    stores srun args
+    """
+
+    partition: str = global_vars.PARTITION
+
+    def generate_args(self) -> List[str]:
+        return ["srun", "--ntasks=1", "-p", self.partition]

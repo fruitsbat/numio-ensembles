@@ -8,7 +8,7 @@ from typing import List
 import subprocess
 import platform
 
-from mpirun import MPIRunModel
+from mpirun import SrunModel
 from numio import CommunicationModel, MatrixModel, NumioModel, ReadModel, WriteModel
 
 
@@ -32,7 +32,7 @@ class Daemon:
         self.firstRun = False
         result = (
             subprocess.run(
-                MPIRunModel().generate_args() + self.commands,
+                SrunModel().generate_args() + self.commands,
                 check=True,
                 capture_output=True,
             ),
